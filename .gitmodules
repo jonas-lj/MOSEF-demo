@@ -1,0 +1,3 @@
+[submodule "MOSEF"]
+	path = MOSEF
+	url = https://github.com/jonas-lj/MOSEF
