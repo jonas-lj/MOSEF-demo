@@ -5,13 +5,10 @@ import java.io.IOException;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.MOSEFFactory;
 import dk.jonaslindstrom.mosef.modules.Module;
-import dk.jonaslindstrom.mosef.modules.filter.LowPassFilterFixed;
-import dk.jonaslindstrom.mosef.modules.limiter.Limiter;
 import dk.jonaslindstrom.mosef.modules.output.Output;
-import dk.jonaslindstrom.mosef.modules.sample.SampleFactory;
 
 /**
  * Here, we apply ring modulation to a speech sample, emulating something
@@ -24,19 +21,17 @@ public class Dalek {
 
 	public static void main(String[] args) throws UnsupportedAudioFileException, IOException {
 
-		MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
-		MOSEFFactory m = new MOSEFFactory(settings);
-				
-		Module input = SampleFactory.fromFile(settings, new File("samples/exterminate.wav"), true);
+		MOSEF m = new MOSEF(new MOSEFSettings(44100, 512, 16));
+		Module input = m.sample(new File("samples/exterminate.wav"));
 		
 		Module lfo = m.amplifier(m.sine(m.constant(30.0f)), 2.0f);
-		Module ringModulator = m.amplifier(input, lfo);
+		Module ringModulator = m.multiplier(input, lfo);
 		
-		Module clip = new Limiter(settings, ringModulator, m.constant(0.6f));
+		Module clip = m.limiter(ringModulator, m.constant(0.6f));
 				
-		Module filter = new LowPassFilterFixed(settings, clip, 7000.0f);
+		Module filter = m.lowPassFilter(clip, 7000.0f);
 		
-		Output output = new Output(settings, filter);
+		Output output = m.output(filter);
 		output.start();
 		
 		long time = 6000;

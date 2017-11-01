@@ -2,11 +2,9 @@ package dk.jonaslindstrom.mosef.demo;
 
 import java.io.File;
 
+import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.MOSEFFactory;
 import dk.jonaslindstrom.mosef.modules.Module;
-import dk.jonaslindstrom.mosef.modules.filter.LowPassFilterFixed;
-import dk.jonaslindstrom.mosef.modules.limiter.Distortion;
 import dk.jonaslindstrom.mosef.modules.output.Output;
 
 /**
@@ -20,13 +18,12 @@ public class Chorus {
 
 	public static void main(String[] args) {
 
-		MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
-		MOSEFFactory m = new MOSEFFactory(settings);
+		MOSEF m = new MOSEF(new MOSEFSettings(44100, 512, 16));
 				
 		Module input = m.sample(new File("samples/guitar.wav"));
 
 		// Overdrive
-		Module drive = new Distortion(settings, input, m.constant(0.2f));
+		Module drive = m.distortion(input, m.constant(0.2f));
 		
 		// Chorus
 		Module[] splits = m.split(drive, 2);
@@ -39,12 +36,12 @@ public class Chorus {
 				
 		Module out = m.amplifier(mix, 0.2f);
 		
-		Module filter = new LowPassFilterFixed(settings, out, 10000.0f);
+		Module filter = m.lowPassFilter(out, 10000.0f);
 		
-		Output output = new Output(settings, filter);
+		Output output = m.output(filter);
 		output.start();
 		
-		long time = 5000;
+		long time = 50000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */

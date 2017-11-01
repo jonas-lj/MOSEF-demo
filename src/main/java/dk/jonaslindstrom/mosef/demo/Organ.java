@@ -1,9 +1,8 @@
 package dk.jonaslindstrom.mosef.demo;
 
+import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.MOSEFFactory;
 import dk.jonaslindstrom.mosef.modules.Module;
-import dk.jonaslindstrom.mosef.modules.misc.Constant;
 import dk.jonaslindstrom.mosef.modules.oscillator.waves.TriangleWave;
 import dk.jonaslindstrom.mosef.modules.oscillator.waves.Wave;
 import dk.jonaslindstrom.mosef.modules.output.Output;
@@ -18,14 +17,14 @@ public class Organ {
 	public static void main(String[] args) {
 		
 		MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
-		MOSEFFactory m = new MOSEFFactory(settings);
+		MOSEF m = new MOSEF(settings);
 
 		float f = 261.626f;
 		
-		Constant frequency = new Constant(settings, f);
+		Module frequency = m.constant(f);
 		Module[] frequencySplits = m.split(frequency, 4);
 		
-		Wave wave = new TriangleWave();
+		Wave wave = new TriangleWave(settings);
 
 		float[] drawbars = new float[] { 1.0f, 1.0f, 1.0f };
 		
@@ -55,25 +54,11 @@ public class Organ {
 		Module mix = m.mixer(dry, wet);
 		Module out = m.amplifier(mix, 0.3f);
 		
-		Output output = new Output(settings, out);
+		Output output = m.output(out);
 		output.start();
 		
-		long time = 1000;
+		long time = 2000;
 		long start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < time) {
-			/* wait for it... */
-		}
-		
-		frequency.setValue(f * 4.0f / 3.0f);
-		
-		start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < time) {
-			/* wait for it... */
-		}
-
-		frequency.setValue(f * 3.0f / 2.0f);
-		
-		start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}

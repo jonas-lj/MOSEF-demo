@@ -1,7 +1,7 @@
 package dk.jonaslindstrom.mosef.demo;
 
+import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.MOSEFFactory;
 import dk.jonaslindstrom.mosef.modules.Module;
 import dk.jonaslindstrom.mosef.modules.filter.LowPassFilter;
 import dk.jonaslindstrom.mosef.modules.filter.filters.windows.HannPoissonWindow;
@@ -20,10 +20,10 @@ public class SubtractiveSynthesis {
 	public static void main(String[] arguments) {
 		
 		MOSEFSettings settings = new MOSEFSettings(44100, 1024, 16);
-		MOSEFFactory m = new MOSEFFactory(settings);
+		MOSEF m = new MOSEF(settings);
 		
 		Module lfo1 = m.sine(m.constant(0.2f));
-		Module base = m.center(lfo1, m.constant(128.0f), m.constant(100.0f));
+		Module base = m.center(lfo1, m.constant(200.0f), m.constant(180.0f));
 		
 		Module[] splits = m.split(base, 3);
 		Module off1 = m.amplifier(splits[1], m.constant(1.003f));
