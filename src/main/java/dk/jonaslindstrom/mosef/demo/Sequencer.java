@@ -6,7 +6,6 @@ import dk.jonaslindstrom.mosef.modules.Module;
 import dk.jonaslindstrom.mosef.modules.envelope.Envelope;
 import dk.jonaslindstrom.mosef.modules.filter.LowPassFilterFixed;
 import dk.jonaslindstrom.mosef.modules.filter.filters.windows.HannPoissonWindow;
-import dk.jonaslindstrom.mosef.modules.output.Output;
 import dk.jonaslindstrom.mosef.modules.sequencers.ClockDivider;
 import dk.jonaslindstrom.mosef.modules.sequencers.ClockFixed;
 import dk.jonaslindstrom.mosef.modules.splitter.Splitter;
@@ -43,19 +42,16 @@ public class Sequencer {
 		Module filter = new LowPassFilterFixed(settings, mix, 4096.0f, 101,
 				new HannPoissonWindow(101, 0.5));
 
-		Output output = new Output(settings, filter);
-		output.start();
+		m.audioOut(filter);
+		m.start();
 
 		long time = 10000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
-		output.stop();
-		start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < 500) {
-			/* wait for it... */
-		}
+		m.stop();
+
 	}
 
 }

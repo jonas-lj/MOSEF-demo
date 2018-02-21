@@ -4,7 +4,6 @@ import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
 import dk.jonaslindstrom.mosef.modules.arpeggio.Arpeggio;
-import dk.jonaslindstrom.mosef.modules.output.Output;
 
 /**
  * This application tests pulse width modulation synthesis where the widt of a
@@ -25,20 +24,15 @@ public class PulseWidthModulation {
 		Module oscillator = m.pulse(arpeggio, m.center(modulator, m.constant(0.3f), m.constant(0.1f)));
 		Module out = m.amplifier(oscillator, 0.2f);
 		
-		Output output = new Output(settings, out);		
-		output.start();
+		m.audioOut(out);
+		m.start();
 		
 		long time = 100000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
-		output.stop();
-		start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < 500) {
-			/* wait for it... */
-		}
-		
+		m.stop();
 	}
 	
 }

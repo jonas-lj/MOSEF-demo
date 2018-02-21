@@ -4,7 +4,6 @@ import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
 import dk.jonaslindstrom.mosef.modules.envelope.Envelope;
-import dk.jonaslindstrom.mosef.modules.output.Output;
 import dk.jonaslindstrom.mosef.modules.sequencers.ClockFixed;
 import dk.jonaslindstrom.mosef.modules.sequencers.EuclideanRhythm;
 import dk.jonaslindstrom.mosef.modules.sequencers.Rhythm;
@@ -33,19 +32,15 @@ public class EuclideanRhythmBox {
 		Module envelope = new Envelope(settings, m.constant(0.01f), m.constant(0.01f),
 					m.constant(1.0f), m.constant(0.1f), clock);
 
-		Output output = new Output(settings, m.amplifier(input, envelope));
-		output.start();
+		m.audioOut(m.amplifier(input, envelope));
+		m.start();
 		
 		long time = 10000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
-		output.stop();
-		start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < 500) {
-			/* wait for it... */
-		}
+		m.stop();
 		
 	}
 	

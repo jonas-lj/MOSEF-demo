@@ -1,14 +1,11 @@
 package dk.jonaslindstrom.mosef.demo;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
-import dk.jonaslindstrom.mosef.modules.output.Output;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * Here, we apply ring modulation to a speech sample, emulating something
@@ -31,15 +28,15 @@ public class Dalek {
 				
 		Module filter = m.lowPassFilter(clip, 7000.0f);
 		
-		Output output = m.output(filter);
-		output.start();
+		m.audioOut(filter);
+		m.start();
 		
 		long time = 6000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
-		output.stop();		
+		m.stop();		
 	}
 
 }

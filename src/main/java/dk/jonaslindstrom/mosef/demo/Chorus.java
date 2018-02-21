@@ -1,11 +1,9 @@
 package dk.jonaslindstrom.mosef.demo;
 
-import java.io.File;
-
 import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
-import dk.jonaslindstrom.mosef.modules.output.Output;
+import java.io.File;
 
 /**
  * This application tests applying the low pass filter to a rich input signal
@@ -38,15 +36,15 @@ public class Chorus {
 		
 		Module filter = m.lowPassFilter(out, 10000.0f);
 		
-		Output output = m.output(filter);
-		output.start();
+		m.audioOut(filter);
+		m.start();
 		
 		long time = 50000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
-		output.stop();
+		m.stop();
 		
 	}
 

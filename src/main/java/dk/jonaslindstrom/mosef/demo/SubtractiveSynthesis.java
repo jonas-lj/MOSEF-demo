@@ -5,7 +5,6 @@ import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
 import dk.jonaslindstrom.mosef.modules.filter.LowPassFilter;
 import dk.jonaslindstrom.mosef.modules.filter.filters.windows.HannPoissonWindow;
-import dk.jonaslindstrom.mosef.modules.output.Output;
 
 /**
  * This demo application tests subtractive synthesis. A square wave signal is
@@ -35,15 +34,15 @@ public class SubtractiveSynthesis {
 		Module filter = new LowPassFilter(settings, mix, lfo2, 512, 101,
 				new HannPoissonWindow(101, 0.5));
 		
-		Output output = new Output(settings, filter);
-		output.start();
+		m.audioOut(filter);
+		m.start();
 		
 		long time = 10000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
-		output.stop();
+		m.stop();
 	}
 	
 }

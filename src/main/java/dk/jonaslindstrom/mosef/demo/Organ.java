@@ -5,7 +5,6 @@ import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
 import dk.jonaslindstrom.mosef.modules.oscillator.waves.TriangleWave;
 import dk.jonaslindstrom.mosef.modules.oscillator.waves.Wave;
-import dk.jonaslindstrom.mosef.modules.output.Output;
 
 /**
  * This class emulates an electric drawbar organ.
@@ -54,16 +53,16 @@ public class Organ {
 		Module mix = m.mixer(dry, wet);
 		Module out = m.amplifier(mix, 0.3f);
 		
-		Output output = m.output(out);
-		output.start();
+		m.audioOut(out);
+		m.start();
 		
-		long time = 2000;
+		long time = 10000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
 		}
 		
-		output.stop();
+		m.stop();
 		
 	}
 
