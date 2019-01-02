@@ -27,19 +27,19 @@ public class Chorus {
 		MOSEFModule[] splits = m.split(drive, 2);
 		MOSEFModule dry = splits[0];
 		
-		MOSEFModule lfo = m.center(m.sine(m.constant(5.0f)), m.constant(0.0035f), m.constant(0.0005f));
+		MOSEFModule lfo = m.center(m.sine(5.0f), m.constant(0.0035f), m.constant(0.0005f));
 		MOSEFModule wet = m.delay(splits[1], lfo, 0.01f);
 		
 		MOSEFModule mix = m.mixer(dry, wet);
 				
 		MOSEFModule out = m.amplifier(mix, 0.2f);
 		
-		MOSEFModule filter = m.lowPassFilter(out, 5000.0f);
+		MOSEFModule filter = m.lowPassFilter(out, 4000.0f);
 		
 		m.audioOut(filter);
 		m.start();
 		
-		long time = 50000;
+		long time = 5000;
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < time) {
 			/* wait for it... */
