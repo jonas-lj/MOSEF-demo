@@ -2,7 +2,7 @@ package dk.jonaslindstrom.mosef.demo;
 
 import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.Module;
+import dk.jonaslindstrom.mosef.modules.MOSEFModule;
 import dk.jonaslindstrom.mosef.modules.envelope.Envelope;
 import dk.jonaslindstrom.mosef.modules.sequencers.ClockFixed;
 import dk.jonaslindstrom.mosef.modules.sequencers.EuclideanRhythm;
@@ -19,17 +19,17 @@ public class EuclideanRhythmBox {
 
 	public static void main(String[] arguments) {
 		
-		int n = 8;
-		int k = 3;
+		int n = 16;
+		int k = 7;
 		
 		MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
 		MOSEF m = new MOSEF(settings);
 
 		int[] r = new EuclideanRhythm(k, n).getRhythm();
-		Module clock = new Rhythm(settings, new ClockFixed(settings, 240), r);
+		MOSEFModule clock = new Rhythm(settings, new ClockFixed(settings, 240), r);
 
-		Module input = m.noise();
-		Module envelope = new Envelope(settings, m.constant(0.01f), m.constant(0.01f),
+		MOSEFModule input = m.noise();
+		MOSEFModule envelope = new Envelope(settings, m.constant(0.01f), m.constant(0.01f),
 					m.constant(1.0f), m.constant(0.1f), clock);
 
 		m.audioOut(m.amplifier(input, envelope));

@@ -2,7 +2,7 @@ package dk.jonaslindstrom.mosef.demo;
 
 import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.Module;
+import dk.jonaslindstrom.mosef.modules.MOSEFModule;
 import dk.jonaslindstrom.mosef.modules.envelope.Envelope;
 import dk.jonaslindstrom.mosef.modules.filter.LowPassFilterFixed;
 import dk.jonaslindstrom.mosef.modules.filter.filters.windows.HannPoissonWindow;
@@ -27,19 +27,19 @@ public class Sequencer {
 		int[] periods = new int[] { 2, 3, 5, 7 };
 		int n = notes.length;
 
-		Module[] clocks = Splitter.split(new ClockFixed(settings, 300), n);
+		MOSEFModule[] clocks = Splitter.split(new ClockFixed(settings, 300), n);
 
-		Module[] outs = new Module[n];
+		MOSEFModule[] outs = new MOSEFModule[n];
 		for (int i = 0; i < n; i++) {
-			Module input = m.square(m.constant(notes[i]));
-			Module envelope = new Envelope(settings, m.constant(0.01f), m.constant(0.01f),
+			MOSEFModule input = m.square(m.constant(notes[i]));
+			MOSEFModule envelope = new Envelope(settings, m.constant(0.01f), m.constant(0.01f),
 					m.constant(1.0f), m.constant(0.3f),
 					new ClockDivider(settings, clocks[i], periods[i]));
 			outs[i] = m.amplifier(input, envelope);
 		}
-		Module mix = m.amplifier(m.mixer(outs), 0.3f);
+		MOSEFModule mix = m.amplifier(m.mixer(outs), 0.3f);
 		
-		Module filter = new LowPassFilterFixed(settings, mix, 4096.0f, 101,
+		MOSEFModule filter = new LowPassFilterFixed(settings, mix, 4096.0f, 101,
 				new HannPoissonWindow(101, 0.5));
 
 		m.audioOut(filter);

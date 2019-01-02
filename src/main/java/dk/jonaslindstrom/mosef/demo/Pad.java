@@ -14,23 +14,26 @@ import dk.jonaslindstrom.mosef.printer.Printer;
  * @author Jonas Lindstrøm (jonas.lindstrom@alexandra.dk)
  *
  */
-public class SubtractiveSynthesis {
+public class Pad {
 
   public static void main(String[] arguments) {
 
     MOSEFSettings settings = new MOSEFSettings(44100, 1024, 16);
     MOSEF m = new MOSEF(settings);
 
-    MOSEFModule lfo1 = m.sine(m.constant(0.2f));
-    MOSEFModule base = m.center(lfo1, 200.0f, 180.0f);
+    int n = 5;
+    
+    MOSEFModule base = m.center(m.sine(0.1f), 55.0f, 5.0f);
+    MOSEFModule[] frequencies = m.split(base, n);
+    MOSEFModule[] oscillators = new MOSEFModule[n];
+    float scale = 1.0f;
+    for (int i = 0; i < n; i++) {
+      oscillators[i] = m.triangle(m.amplifier(frequencies[i], scale));
+      scale *= 4.0f / 3.0f;
+    }
+    MOSEFModule mix = m.amplifier(m.mixer(oscillators), 0.5f / n);
 
-    MOSEFModule[] splits = m.split(base, 3);
-    MOSEFModule off1 = m.amplifier(splits[1], 1.003f);
-    MOSEFModule off2 = m.amplifier(splits[2], 0.994f);
-    MOSEFModule[] osc = new MOSEFModule[] {m.square(splits[0]), m.square(off1), m.square(off2)};
-    MOSEFModule mix = m.amplifier(m.mixer(osc), 0.2f);
-
-    MOSEFModule lfo2 = m.center(m.sine(0.15f), 2048.0f, 1024.0f);
+    MOSEFModule lfo2 = m.constant(200.0f); //m.center(m.sine(0.1f), 256.0f, 200.0f);
     MOSEFModule filtered =
         new LowPassFilter(settings, mix, lfo2, 512, 101, new HannPoissonWindow(101, 0.5));
     
