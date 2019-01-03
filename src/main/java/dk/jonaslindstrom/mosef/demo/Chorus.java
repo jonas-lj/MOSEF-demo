@@ -2,7 +2,7 @@ package dk.jonaslindstrom.mosef.demo;
 
 import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
-import dk.jonaslindstrom.mosef.modules.MOSEFModule;
+import dk.jonaslindstrom.mosef.modules.Module;
 import java.io.File;
 
 /**
@@ -18,23 +18,23 @@ public class Chorus {
 
 		MOSEF m = new MOSEF(new MOSEFSettings(44100, 512, 16));
 				
-		MOSEFModule input = m.sample(new File("samples/guitar.wav"));
+		Module input = m.sample(new File("samples/guitar.wav"));
 
 		// Overdrive
-		MOSEFModule drive = m.distortion(input, m.constant(0.2f));
+		Module drive = m.distortion(input, m.constant(0.2));
 		
 		// Chorus
-		MOSEFModule[] splits = m.split(drive, 2);
-		MOSEFModule dry = splits[0];
+		Module[] splits = m.split(drive, 2);
+		Module dry = splits[0];
 		
-		MOSEFModule lfo = m.center(m.sine(5.0f), m.constant(0.0035f), m.constant(0.0005f));
-		MOSEFModule wet = m.delay(splits[1], lfo, 0.01f);
+		Module lfo = m.center(m.sine(5.0f), m.constant(0.0035), m.constant(0.0005));
+		Module wet = m.delay(splits[1], lfo, 0.01);
 		
-		MOSEFModule mix = m.mixer(dry, wet);
+		Module mix = m.mixer(dry, wet);
 				
-		MOSEFModule out = m.amplifier(mix, 0.2f);
+		Module out = m.amplifier(mix, 0.2);
 		
-		MOSEFModule filter = m.lowPassFilter(out, 4000.0f);
+		Module filter = m.lowPassFilter(out, 4000.0);
 		
 		m.audioOut(filter);
 		m.start();
