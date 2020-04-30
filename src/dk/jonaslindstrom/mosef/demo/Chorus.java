@@ -4,6 +4,7 @@ import dk.jonaslindstrom.mosef.MOSEF;
 import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This application tests applying the low pass filter to a rich input signal
@@ -14,7 +15,7 @@ import java.io.File;
  */
 public class Chorus {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		MOSEF m = new MOSEF(new MOSEFSettings(44100, 512, 16));
 				
@@ -27,25 +28,20 @@ public class Chorus {
 		Module[] splits = m.split(drive, 2);
 		Module dry = splits[0];
 		
-		Module lfo = m.center(m.sine(5.0f), m.constant(0.0035), m.constant(0.0005));
+		Module lfo = m.offset(m.sine(5.0f), m.constant(0.0035), m.constant(0.0005));
 		Module wet = m.delay(splits[1], lfo, 0.01);
 		
 		Module mix = m.mixer(dry, wet);
 				
 		Module out = m.amplifier(mix, 0.2);
 		
-		Module filter = m.lowPassFilter(out, 4000.0);
+		Module filter = m.filter(out, 4000.0);
 		
 		m.audioOut(filter);
+
 		m.start();
-		
-		long time = 5000;
-		long start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < time) {
-			/* wait for it... */
-		}
+		TimeUnit.SECONDS.sleep(10);
 		m.stop();
-		
 	}
 
 }

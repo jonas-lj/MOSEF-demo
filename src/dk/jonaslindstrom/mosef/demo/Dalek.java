@@ -21,12 +21,12 @@ public class Dalek {
 		MOSEF m = new MOSEF(new MOSEFSettings(44100, 512, 16));
 		Module input = m.sample(new File("samples/exterminate.wav"));
 		
-		Module lfo = m.amplifier(m.sine(m.constant(30.0f)), 2.0f);
+		Module lfo = m.amplifier(m.sine(m.constant(30)), 2);
 		Module ringModulator = m.multiplier(input, lfo);
 		
-		Module clip = m.limiter(ringModulator, m.constant(0.6f));
+		Module clip = m.limiter(ringModulator, m.constant(0.6));
 				
-		Module filter = m.lowPassFilter(clip, 7000.0f);
+		Module filter = m.filter(clip, 7000);
 		
 		m.audioOut(filter);
 		m.start();

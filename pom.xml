@@ -15,77 +15,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>9</source>
-					<target>9</target>
+					<source>13</source>
+					<target>13</target>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.dstovall</groupId>
-				<artifactId>onejar-maven-plugin</artifactId>
-				<version>1.4.4</version>
-				<executions>
-					<execution>
-						<id>SubtractiveSynthesis</id>
-						<configuration>
-							<mainClass>dk.jonaslindstrom.mosef.demo.SubtractiveSynthesis</mainClass>
-							<attachToBuild>true</attachToBuild>
-							<classifier>onejar</classifier>
-							<filename>SubtractiveSynthesis.jar</filename>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>PulseWidthModulation</id>
-						<configuration>
-							<mainClass>dk.jonaslindstrom.mosef.demo.PulseWidthModulation</mainClass>
-							<attachToBuild>true</attachToBuild>
-							<classifier>onejar</classifier>
-							<filename>PulseWidthModulation.jar</filename>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>Chorus</id>
-						<configuration>
-							<mainClass>dk.jonaslindstrom.mosef.demo.Chorus</mainClass>
-							<attachToBuild>true</attachToBuild>
-							<classifier>onejar</classifier>
-							<filename>Chorus.jar</filename>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>Organ</id>
-						<configuration>
-							<mainClass>dk.jonaslindstrom.mosef.demo.Organ</mainClass>
-							<attachToBuild>true</attachToBuild>
-							<classifier>onejar</classifier>
-							<filename>Organ.jar</filename>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>Dalek</id>
-						<configuration>
-							<mainClass>dk.jonaslindstrom.mosef.demo.Dalek</mainClass>
-							<attachToBuild>true</attachToBuild>
-							<classifier>onejar</classifier>
-							<filename>Dalek.jar</filename>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -94,7 +26,8 @@
 		<dependency>
 			<groupId>dk.jonaslindstrom</groupId>
 			<artifactId>MOSEF</artifactId>
-			<version>0.1</version>
+			<version>0.2</version>
 		</dependency>
+
 	</dependencies>
 </project>
