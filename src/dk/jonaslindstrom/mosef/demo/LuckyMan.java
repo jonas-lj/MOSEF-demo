@@ -27,7 +27,7 @@ import javax.sound.midi.InvalidMidiDataException;
 public class LuckyMan {
 
   public static void main(String[] arguments)
-      throws InvalidMidiDataException, IOException, InterruptedException, ClassNotFoundException {
+      throws IOException, InterruptedException, ClassNotFoundException {
 
     MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
     MOSEF m = new MOSEF(settings);

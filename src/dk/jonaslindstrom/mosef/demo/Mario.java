@@ -21,7 +21,7 @@ import javax.sound.midi.InvalidMidiDataException;
 public class Mario {
 
   public static void main(String[] arguments)
-      throws InvalidMidiDataException, IOException, InterruptedException, ClassNotFoundException {
+      throws IOException, InterruptedException, ClassNotFoundException {
 
     MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
     MOSEF m = new MOSEF(settings);
@@ -32,8 +32,7 @@ public class Mario {
         .getPolyphonicVoices(settings, new WellTemperedTuningFunction(), 8).stream()
         .map(mel -> buildVoicePwm(m, mel.first, mel.second)).collect(Collectors.toList());
 
-
-        Module mix = m.mixer(voices);
+    Module mix = m.mixer(voices);
     Module out = m.amplifier(mix, 0.2);
 
     m.audioOut(out);
