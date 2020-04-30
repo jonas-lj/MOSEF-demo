@@ -5,6 +5,7 @@ import dk.jonaslindstrom.mosef.MOSEFSettings;
 import dk.jonaslindstrom.mosef.modules.Module;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
@@ -16,7 +17,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public class Dalek {
 
-	public static void main(String[] args) throws UnsupportedAudioFileException, IOException {
+	public static void main(String[] args)
+			throws UnsupportedAudioFileException, IOException, InterruptedException {
 
 		MOSEF m = new MOSEF(new MOSEFSettings(44100, 512, 16));
 		Module input = m.sample(new File("samples/exterminate.wav"));
@@ -30,13 +32,8 @@ public class Dalek {
 		
 		m.audioOut(filter);
 		m.start();
-		
-		long time = 5000;
-		long start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < time) {
-			/* wait for it... */
-		}
-		m.stop();		
+		TimeUnit.SECONDS.sleep(5);
+		m.stop();
 	}
 
 }

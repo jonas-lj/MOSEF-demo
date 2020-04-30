@@ -15,6 +15,7 @@ import dk.jonaslindstrom.mosef.modules.sequencers.Expander;
 import dk.jonaslindstrom.mosef.modules.splitter.Splitter;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class EuclideanRhythmTest {
 
@@ -35,7 +36,7 @@ public class EuclideanRhythmTest {
         }
     }
 
-    public static void main(String[] arguments) {
+    public static void main(String[] arguments) throws InterruptedException {
         MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
         MOSEF m = new MOSEF(settings);
 
@@ -56,12 +57,9 @@ public class EuclideanRhythmTest {
         m.audioOut(filter);
 
         m.start();
-        long time = 10000;
-        long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < time) {
-            /* wait for it... */
-        }
+        TimeUnit.SECONDS.sleep(10);
         m.stop();
+
     }
 
 }

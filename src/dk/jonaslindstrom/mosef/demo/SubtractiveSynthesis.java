@@ -11,6 +11,7 @@ import dk.jonaslindstrom.mosef.modules.sequencers.ClockFixed;
 import dk.jonaslindstrom.mosef.modules.sequencers.Periodic;
 import dk.jonaslindstrom.mosef.modules.tuning.tuningfunction.TuningFunction;
 import dk.jonaslindstrom.mosef.modules.tuning.tuningfunction.WellTemperedTuningFunction;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This demo application tests subtractive synthesis. A square wave signal is modulated with other
@@ -21,7 +22,7 @@ import dk.jonaslindstrom.mosef.modules.tuning.tuningfunction.WellTemperedTuningF
  */
 public class SubtractiveSynthesis {
 
-  public static void main(String[] arguments) {
+  public static void main(String[] arguments) throws InterruptedException {
 
     MOSEFSettings settings = new MOSEFSettings(44100, 512, 16);
     MOSEF m = new MOSEF(settings);
@@ -60,13 +61,9 @@ public class SubtractiveSynthesis {
 
     m.audioOut(mod);
     m.start();
-
-    long time = 60000;
-    long start = System.currentTimeMillis();
-    while (System.currentTimeMillis() - start < time) {
-      /* wait for it... */
-    }
+    TimeUnit.SECONDS.sleep(60);
     m.stop();
+
   }
 
 }
